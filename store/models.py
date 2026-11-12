@@ -75,6 +75,12 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart {self.id} - {self.user}"
 
+     # Actualizar    
+    @property
+    def total(self):
+        return sum(item.subtotal for item in self.cartitem_set.all())
+    
+
 
 # =========================
 # 🧾 CartItem (tabla intermedia)
@@ -89,6 +95,14 @@ class CartItem(models.Model):
 
     class Meta:
         unique_together = ('cart', 'product')
+
+    def __str__(self):
+        return f"{self.product} x {self.quantity}"
+
+    # Actualizar
+    @property
+    def subtotal(self):
+            return self.product.price * self.quantity
 
     def __str__(self):
         return f"{self.product} x {self.quantity}"
